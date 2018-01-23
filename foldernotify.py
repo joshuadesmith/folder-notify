@@ -1,17 +1,42 @@
 # foldernotify.py
 # Author: Josh Smith
 
-import os
+import os, smtplib
 
-contact_filename = 'contact.txt'
-folder_filename = 'fdir.txt'
+contact_filename = 'contact.txt'	# Text file that contains emails
+folder_filename = 'fdir.txt'		# Text file that contains directory to be monitored
+login_filename = 'login.txt'		# Text file that contains login info for outgoing email
 
+
+# Gets the emails to which notification messages will be sent
 def get_contacts():
 	contacts = []
 	with open(contact_filename, mode='r', encoding='utf-8') as contact_file:
 		for contact in contact_file:
 			contacts.append(contact)
 	return contacts
+
+
+# Gets login info from text file
+def get_login_info():
+	file_lines = open(login_filename, mode='r', encoding='utf-8').read().splitlines()
+	return file_lines[0], file_lines[1]
+
+
+# Sends an email to each contact
+def notify(contacts, current_folder_contents, added, removed):
+	user, password = get_login_info()
+	try:
+		server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+		server.ehlo()
+		server.login(user, password)
+
+		server.sendmail(user, contacts[0], 'TEST')
+		server.close()
+
+		print 'SUCCESS'
+	except:
+		print 'Error occurred while setting up SMTP server'
 
 
 # Gets contents of folder that contains intern tasks
@@ -48,16 +73,12 @@ def main():
 		# wait()
 		current_folder_contents, added, removed = get_folder_diff(current_folder_contents)
 		if added:
-			# notify(current_folder_contents, added, removed)
+			# notify(contacts, current_folder_contents, added, removed)
 		else:
 			# TODO: print message indicating no new files
 
 
 if __name__ == "__main__":
-	print("Contacts:")
-	for contact in get_contacts():
-		print("\t- " + contact)
-	print("Folder Contents:")
-	for file in get_folder_contents():
-		print("\t- " + file)
+	print 'MUST IMPLEMENT'
+		
 		
