@@ -34,9 +34,9 @@ def notify(contacts, current_folder_contents, added, removed):
 		server.sendmail(user, contacts[0], 'TEST')
 		server.close()
 
-		print 'SUCCESS'
+		print('SUCCESS')
 	except:
-		print 'Error occurred while setting up SMTP server'
+		print('Error occurred while setting up SMTP server')
 
 
 # Gets contents of folder that contains intern tasks
@@ -68,17 +68,16 @@ def get_folder_diff(folder_contents):
 # TODO: Implement wait function
 # TODO: Implement notify function
 def main():
-	current_folder_contents = get_folder_contents()
-	while True:
-		# wait()
-		current_folder_contents, added, removed = get_folder_diff(current_folder_contents)
-		if added:
-			# notify(contacts, current_folder_contents, added, removed)
-		else:
-			# TODO: print message indicating no new files
+	contacts = get_contacts()
+	current_folder_contents = []
+	added = []
+	removed = []
+	# wait()
+	# current_folder_contents = get_folder_contents()
+	# current_folder_contents, added, removed = get_folder_diff(current_folder_contents)
+	notify(contacts, current_folder_contents, added, removed)
 
 
 if __name__ == "__main__":
-	print 'MUST IMPLEMENT'
-		
+	main()
 		
